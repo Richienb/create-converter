@@ -1,6 +1,6 @@
 {
 	"name": "create-converter",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"description": "Create a unit converter.",
 	"repository": "https://github.com/Richienb/create-converter.git",
 	"author": "Richie Bendall <richiebendall@gmail.com>",
