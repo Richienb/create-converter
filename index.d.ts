@@ -1,15 +1,20 @@
 /**
-My awesome module.
-@param input Lorem ipsum.
-@param postfix Lorem ipsum.
+Create a unit converter.
+@param conversionRates The conversion rates between units.
 @example
 ```
-const theModule = require("the-module");
+const createConverter = require("create-converter");
 
-theModule("unicorns");
-//=> 'unicorns & rainbows'
+const converter = createConverter({
+	usd: 1,
+	nzd: 1.5,
+	gbp: 0.5
+});
+
+converter.nzd.gbp(12);
+//=> 4
 ```
 */
-declare function theModule(input: string, { postfix }: { postfix?: string }): string
+declare function createConverter<UnitType extends string>(conversionRates: Record<UnitType, number>): Record<UnitType, Record<UnitType, (amount: number) => number>>
 
-export = theModule
+export = createConverter

@@ -1,41 +1,36 @@
-# the-module [![Travis CI Build Status](https://img.shields.io/travis/com/Richienb/the-module/master.svg?style=for-the-badge)](https://travis-ci.com/Richienb/the-module)
+# create-converter [![Travis CI Build Status](https://img.shields.io/travis/com/Richienb/create-converter/master.svg?style=for-the-badge)](https://travis-ci.com/Richienb/create-converter)
 
-My awesome module.
+Create a unit converter.
 
-[![NPM Badge](https://nodei.co/npm/the-module.png)](https://npmjs.com/package/the-module)
+[![NPM Badge](https://nodei.co/npm/create-converter.png)](https://npmjs.com/package/create-converter)
 
 ## Install
 
 ```sh
-npm install the-module
+npm install create-converter
 ```
 
 ## Usage
 
 ```js
-const theModule = require("the-module");
+const createConverter = require("create-converter");
 
-theModule("unicorns");
-//=> 'unicorns & rainbows'
+const converter = createConverter({
+	usd: 1,
+	nzd: 1.5,
+	gbp: 0.5
+});
+
+converter.nzd.gbp(12);
+//=> 4
 ```
 
 ## API
 
-### theModule(input, options?)
+### createConverter(conversionRates)
 
-#### input
-
-Type: `string`
-
-Lorem ipsum.
-
-#### options
+#### conversionRates
 
 Type: `object`
 
-##### postfix
-
-Type: `string`\
-Default: `rainbows`
-
-Lorem ipsum.
+The conversion rates between units.
