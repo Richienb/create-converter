@@ -1,3 +1,5 @@
+import Decimal from "decimal.js"
+
 /**
 Create a unit converter.
 @param conversionRates The conversion rates between units.
@@ -15,9 +17,9 @@ converter.nzd.gbp(12);
 //=> 4
 ```
 */
-declare function createConverter<UnitType extends string>(conversionRates: Record<UnitType, number> | Record<UnitType, true | {
-	toBase: (amount: Decimal) => number
-	fromBase: (amount: Decimal) => number
+declare function createConverter<UnitType extends string>(conversionRates: Record<UnitType, number | Decimal> | Record<UnitType, true | {
+	toBase: (amount: Decimal) => Decimal
+	fromBase: (amount: Decimal) => Decimal
 }>): Record<UnitType, Record<UnitType, (amount: number) => number>>
 
 export = createConverter
