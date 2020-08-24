@@ -15,14 +15,29 @@ npm install create-converter
 ```js
 const createConverter = require("create-converter");
 
-const converter = createConverter({
+const currencyConverter = createConverter({
 	usd: 1,
 	nzd: 1.5,
 	gbp: 0.5
 });
 
-converter.nzd.gbp(12);
+currencyConverter.nzd.gbp(12);
 //=> 4
+
+const temperatureConverter = createConverter({
+	celsius: true,
+	fahrenheit: {
+		toBase: amount => amount.minus(32).times(5).dividedBy(9),
+		fromBase: amount => amount.times(9).dividedBy(5).add(32)
+	},
+	kelvin: {
+		toBase: amount => amount.minus(273.15),
+		fromBase: amount => amount.add(273.15)
+	}
+})
+
+temperatureConverter.celsius.kelvin(22)
+//=> 295.15
 ```
 
 ## API

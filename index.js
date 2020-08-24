@@ -8,33 +8,43 @@ module.exports = conversionRates => {
 		throw new TypeError(`Expected a plain object, got ${typeof conversionRates}`)
 	}
 
-	const conversionMap = new Map(Object.entries(conversionRates))
+	const conversionMap = Object.entries(conversionRates)
+	const isUsingMultiples = conversionMap.every(([_, value]) => typeof value === "number")
 	const conversions = {}
 
-	for (const [from, fromRate] of conversionMap) {
+	for (const [from, fromConverter] of conversionMap) {
 		Object.defineProperty(conversions, from, {
 			get() {
 				const secondConversions = {}
-				for (const [to, toRate] of conversionMap) {
+				for (const [to, toConverter] of conversionMap) {
 					Object.defineProperty(secondConversions, to, {
 						get() {
-							return amount => {
-								if (fromRate === toRate) {
-									return amount
-								}
+							if (isUsingMultiples) {
+								// TODO: Move to `createConverter.multiples` in next major version.
+								return amount => {
+									if (fromConverter === toConverter) {
+										return amount
+									}
 
-								amount = new Decimal(amount)
+									amount = new Decimal(amount)
 
-								if (fromRate === 1) {
+									if (fromConverter === 1) {
+										return amount
+											.times(toConverter)
+											.toNumber()
+									}
+
 									return amount
-										.times(toRate)
+										.times(toConverter)
+										.times(new Decimal(1).dividedBy(fromConverter))
 										.toNumber()
 								}
+							}
 
-								return amount
-									.times(toRate)
-									.times(new Decimal(1).dividedBy(fromRate))
-									.toNumber()
+							return amount => {
+								const fromBase = toConverter === true ? amount => amount : toConverter.fromBase
+								const toBase = fromConverter === true ? amount => amount : fromConverter.toBase
+								return fromBase(toBase(new Decimal(amount))).toNumber()
 							}
 						},
 						enumerable: true
